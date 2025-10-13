@@ -1,8 +1,13 @@
+
 # API Marketplace dengan JWT
 
 Dokumentasi ini menyediakan panduan lengkap untuk setup, konfigurasi, dan pengujian API Marketplace yang diamankan menggunakan otentikasi **JWT**.
 
+<<<<<<< HEAD
 ---
+=======
+-----
+>>>>>>> a6b18a5567a2193c65ea408bbc544a7191cae446
 
 ## 1\. Cara Setup Environment & Menjalankan Server
 
@@ -63,12 +68,17 @@ python app.py
 
 Server akan berjalan di [http://localhost:5000](https://www.google.com/search?q=http://localhost:5000).
 
+<<<<<<< HEAD
 ---
+=======
+-----
+>>>>>>> a6b18a5567a2193c65ea408bbc544a7191cae446
 
 ## 2\. Variabel Environment yang Diperlukan
 
 Variabel berikut harus ada di dalam file `.env` Anda:
 
+<<<<<<< HEAD
 - `JWT_SECRET`: Kunci rahasia yang digunakan untuk menandatangani token JWT.
 - `PORT`: Port tempat server akan berjalan.
 - `DB_HOST`: Host dari database MySQL Anda.
@@ -77,16 +87,27 @@ Variabel berikut harus ada di dalam file `.env` Anda:
 - `DB_NAME`: Nama database MySQL Anda.
 
 ---
+=======
+  * `JWT_SECRET`: Kunci rahasia yang digunakan untuk menandatangani token JWT.
+  * `PORT`: Port tempat server akan berjalan.
+  * `DB_HOST`: Host dari database MySQL Anda.
+  * `DB_USER`: Nama pengguna untuk database MySQL Anda.
+  * `DB_PASSWORD`: Kata sandi untuk database MySQL Anda.
+  * `DB_NAME`: Nama database MySQL Anda.
+
+-----
+>>>>>>> a6b18a5567a2193c65ea408bbc544a7191cae446
 
 ## 3\. Peran Pengguna (User Roles)
 
 Aplikasi ini memiliki dua jenis peran pengguna dengan hak akses yang berbeda.
 
-| **Peran** | **Deskripsi**                                                                                                  | **Kredensial Demo**                          |
-| --------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| user      | Peran standar untuk pengguna. Dapat melihat item dan memperbarui profil sendiri.                               | email: `user1@example.com`, pass: `pass123`  |
-| admin     | Peran untuk administrator. Memiliki hak akses yang berbeda dan tidak dapat mengakses endpoint profil pengguna. | email: `admin@example.com`, pass: `admin123` |
+| **Peran** | **Deskripsi** | **Kredensial Demo** |
+| --- | --- | --- |
+| user | Peran standar untuk pengguna. Dapat melihat item dan memperbarui profil sendiri. | email: `user1@example.com`, pass: `pass123` |
+| admin | Peran untuk administrator. Memiliki hak akses yang berbeda dan tidak dapat mengakses endpoint profil pengguna. | email: `admin@example.com`, pass: `admin123` |
 
+<<<<<<< HEAD
 ---
 
 ## 4\. Daftar Endpoint
@@ -98,6 +119,19 @@ Aplikasi ini memiliki dua jenis peran pengguna dengan hak akses yang berbeda.
 | PUT        | /profile     | JWT          | Memperbarui profil pengguna (hanya user). |
 
 ---
+=======
+-----
+
+## 4\. Daftar Endpoint
+
+| **Method** | **Endpoint** | **Keamanan** | **Deskripsi** |
+| --- | --- | --- | --- |
+| POST | /auth/login | Publik | Login untuk mendapatkan token JWT. |
+| GET | /items | Publik | Mendapatkan daftar item marketplace. |
+| PUT | /profile | JWT | Memperbarui profil pengguna (hanya user). |
+
+-----
+>>>>>>> a6b18a5567a2193c65ea408bbc544a7191cae446
 
 ## 5\. Panduan Pengujian API
 
@@ -107,6 +141,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 
 1.  **Request Login**:
 
+<<<<<<< HEAD
     - Buat request baru: `POST http://localhost:5000/auth/login`.
     - Buka tab **Body**, pilih **raw** dan **JSON**, lalu masukkan kredensial:
       ```json
@@ -134,6 +169,35 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
     - Kirim request.
 
 ---
+=======
+      * Buat request baru: `POST http://localhost:5000/auth/login`.
+      * Buka tab **Body**, pilih **raw** dan **JSON**, lalu masukkan kredensial:
+        ```json
+        {
+          "email": "user1@example.com",
+          "password": "pass123"
+        }
+        ```
+      * Untuk menyimpan token secara otomatis, buka tab **Tests** dan tambahkan:
+        ```javascript
+        const data = pm.response.json();
+        pm.collectionVariables.set('jwt_token', data.access_token);
+        ```
+
+2.  **Request Get Items**:
+
+      * Buat request baru: `GET http://localhost:5000/items`.
+      * Tidak perlu otorisasi atau body. Kirim request.
+
+3.  **Request Update Profile**:
+
+      * Buat request baru: `PUT http://localhost:5000/profile`.
+      * Buka tab **Authorization**, pilih **Bearer Token**, dan masukkan `{{jwt_token}}` di kolom Token.
+      * Buka tab **Body**, pilih **raw** dan **JSON**, lalu masukkan data profil yang ingin diubah.
+      * Kirim request.
+
+-----
+>>>>>>> a6b18a5567a2193c65ea408bbc544a7191cae446
 
 ## 6\. Daftar Endpoint + Skema Request/Response
 
@@ -224,6 +288,7 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 ```
 
 **Response (Error - 404):**
+<<<<<<< HEAD
 
 ```json
 {
@@ -235,6 +300,19 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 
 ## 7\. Contoh cURL
 
+=======
+
+```json
+{
+  "error": "User not found during update"
+}
+```
+
+-----
+
+## 7\. Contoh cURL
+
+>>>>>>> a6b18a5567a2193c65ea408bbc544a7191cae446
 ### 1\. **Login dan Dapatkan JWT**
 
 ```bash
@@ -254,6 +332,7 @@ TOKEN="<paste_JWT_from_login>"
 curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"name":"Updated Name"}'
 ```
 
+<<<<<<< HEAD
 ---
 
 ## 8\. Catatan Kendala/Asumsi
@@ -263,3 +342,14 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 - **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
 - **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
 - **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
+=======
+-----
+
+## 8\. Catatan Kendala/Asumsi
+
+  * **Token Expiry**: Token akses berlaku selama 15 menit dan dapat diperbarui menggunakan **refresh token** yang berlaku selama 7 hari.
+  * **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
+  * **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
+  * **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
+  * **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
+>>>>>>> a6b18a5567a2193c65ea408bbc544a7191cae446
