@@ -1,0 +1,5 @@
+Flask==2.1.2
+PyJWT==2.3.0
+python-dotenv==0.19.2
+flask-swagger-ui==4.11.1
+pytest==7.0.0

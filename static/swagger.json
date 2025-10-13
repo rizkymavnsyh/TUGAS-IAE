@@ -1,0 +1,113 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "JWT Marketplace API",
+    "version": "1.0.0",
+    "title": "JWT Marketplace API"
+  },
+  "basePath": "/",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login and get JWT",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User credentials",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged in and received access token"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/items": {
+      "get": {
+        "summary": "Get list of marketplace items",
+        "responses": {
+          "200": {
+            "description": "List of items",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {"type": "integer"},
+                      "name": {"type": "string"},
+                      "price": {"type": "integer"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile": {
+      "put": {
+        "summary": "Update user profile",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string"},
+                "email": {"type": "string"}
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile updated"
+          },
+          "401": {
+            "description": "Invalid token"
+          },
+          "403": {
+            "description": "Permission denied"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Masukkan token JWT Anda dengan format 'Bearer <token>'"
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}
