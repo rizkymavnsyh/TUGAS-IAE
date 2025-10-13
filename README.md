@@ -228,7 +228,7 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 
 ```json
 {
-  "error": "User not found during update"
+  "error": "User not found"
 }
 ```
 
