@@ -122,12 +122,27 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
       pm.collectionVariables.set('jwt_token', data.access_token);
       ```
 
-2.  **Request Get Items**:
+2.  **Request Refresh Token**:
+
+    - Buat request baru: `POST http://localhost:5000/auth/refresh`.
+    - Buka tab **Body**, pilih **raw** dan **JSON**, lalu masukkan:
+      ```json
+      {
+        "refresh_token": "{{refresh_token}}"
+      }
+      ```
+    - Untuk memperbarui _access token_ Anda secara otomatis, tambahkan skrip berikut di tab **Tests**:
+      ```javascript
+      const data = pm.response.json();
+      pm.collectionVariables.set('jwt_token', data.access_token);
+      ```
+
+3.  **Request Get Items**:
 
     - Buat request baru: `GET http://localhost:5000/items`.
     - Tidak perlu otorisasi atau body. Kirim request.
 
-3.  **Request Update Profile**:
+4.  **Request Update Profile**:
 
     - Buat request baru: `PUT http://localhost:5000/profile`.
     - Buka tab **Authorization**, pilih **Bearer Token**, dan masukkan `{{jwt_token}}` di kolom Token.
@@ -168,7 +183,35 @@ Endpoint ini digunakan untuk login dan mendapatkan token JWT.
 }
 ```
 
-### 2\. **GET `/items`** (Publik)
+#### 2\. **POST `/auth/refresh`**
+
+Endpoint ini digunakan untuk merefresh token sebelumnya.
+
+**Request:**
+
+```json
+{
+  "refresh_token": "<Refresh JWT>"
+}
+```
+
+**Response (Sukses - 200):**
+
+```json
+{
+  "access_token": "<New JWT>"
+}
+```
+
+**Response (Error - 401):**
+
+```json
+{
+  "error": "Refresh token expired"
+}
+```
+
+### 3\. **GET `/items`** (Publik)
 
 Endpoint ini mengembalikan daftar item marketplace yang dapat diakses tanpa autentikasi.
 
@@ -183,7 +226,7 @@ Endpoint ini mengembalikan daftar item marketplace yang dapat diakses tanpa aute
 }
 ```
 
-### 3\. **PUT `/profile`** (Terproteksi - JWT)
+### 4\. **PUT `/profile`** (Terproteksi - JWT)
 
 Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT yang valid di header Authorization.
 
@@ -228,7 +271,7 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 
 ```json
 {
-  "error": "User not found"
+  "error": "User not found during update"
 }
 ```
 
@@ -242,13 +285,19 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 curl -s -X POST http://localhost:5000/auth/login   -H "Content-Type: application/json"   -d '{"email":"user1@example.com","password":"pass123"}'
 ```
 
-### 2\. **Akses Daftar Item Marketplace (Publik)**
+#### 2\. **Gunakan Refresh Token untuk Mendapatkan Token Baru**
+
+```bash
+curl -s -X POST http://localhost:5000/auth/refresh   -H "Content-Type: application/json"   -d "{"refresh_token":"$REFRESH_TOKEN"}" | jq -r .access_token)
+```
+
+### 3\. **Akses Daftar Item Marketplace (Publik)**
 
 ```bash
 curl -s http://localhost:5000/items
 ```
 
-### 3\. **Update Profil Pengguna (Dengan JWT)**
+### 4\. **Update Profil Pengguna (Dengan JWT)**
 
 ```bash
 TOKEN="<paste_JWT_from_login>"
