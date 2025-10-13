@@ -39,6 +39,43 @@
         }
       }
     },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Refresh access token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Provide the refresh token to get a new access token",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "refresh_token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Access token refreshed successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired refresh token"
+          }
+        }
+      }
+    },
     "/items": {
       "get": {
         "summary": "Get list of marketplace items",
@@ -92,11 +129,13 @@
           },
           "403": {
             "description": "Permission denied"
-          },
-          "404": {
-            "description": "User not found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   },
@@ -105,12 +144,7 @@
       "type": "apiKey",
       "in": "header",
       "name": "Authorization",
-      "description": "Masukkan token JWT Anda dengan format 'Bearer <token>'"
+      "description": "Enter your JWT in the format: Bearer <token>"
     }
-  },
-  "security": [
-    {
-      "Bearer": []
-    }
-  ]
+  }
 }

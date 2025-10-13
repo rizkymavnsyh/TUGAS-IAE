@@ -68,7 +68,7 @@ def token_required(f):
             data = jwt.decode(token, app.config['JWT_SECRET'], algorithms=["HS256"])
             user = User.query.filter_by(email=data['email']).first()
             if user is None:
-                return jsonify({"error": "User not found"}), 401
+                return jsonify({"error": "User not found"}), 404
             current_user = {
                 "email": user.email,
                 "name": user.name,
@@ -124,7 +124,7 @@ def refresh_token():
         data = jwt.decode(refresh_token, app.config['JWT_SECRET'], algorithms=["HS256"])
         user = User.query.filter_by(email=data['email']).first()
         if not user:
-            return jsonify({"error": "User not found"}), 401
+            return jsonify({"error": "User not found"}), 404
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Refresh token expired"}), 401
     except jwt.InvalidTokenError:

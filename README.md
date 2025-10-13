@@ -91,11 +91,12 @@ Aplikasi ini memiliki dua jenis peran pengguna dengan hak akses yang berbeda.
 
 ## 4\. Daftar Endpoint
 
-| **Method** | **Endpoint** | **Keamanan** | **Deskripsi**                             |
-| ---------- | ------------ | ------------ | ----------------------------------------- |
-| POST       | /auth/login  | Publik       | Login untuk mendapatkan token JWT.        |
-| GET        | /items       | Publik       | Mendapatkan daftar item marketplace.      |
-| PUT        | /profile     | JWT          | Memperbarui profil pengguna (hanya user). |
+| **Method** | **Endpoint**  | **Keamanan** | **Deskripsi**                              |
+| ---------- | ------------- | ------------ | ------------------------------------------ |
+| POST       | /auth/login   | Publik       | Login untuk mendapatkan token JWT.         |
+| POST       | /auth/refresh | Publik       | Memperbarui access token yang kedaluwarsa. |
+| GET        | /items        | Publik       | Mendapatkan daftar item marketplace.       |
+| PUT        | /profile      | JWT          | Memperbarui profil pengguna (hanya user).  |
 
 ---
 
