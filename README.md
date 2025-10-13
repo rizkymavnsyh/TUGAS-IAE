@@ -12,7 +12,7 @@ Pastikan Anda memiliki **Python** dan **pip** terinstal. Kemudian, instal semua 
 
    ```bash
    python -m venv venv
-   source venv/bin/activate  # atau `venv\Scriptsctivate` di Windows
+   venv\Scripts\Activate di Windows atau source venv/bin/activate di mac
    ```
 
 2. Instal dependensi:
@@ -166,57 +166,9 @@ Untuk pengujian cepat dari command line.
      ```bash
      curl -s -X PUT http://localhost:5000/profile -H "Authorization: Bearer <TOKEN_ANDA>" -H "Content-Type: application/json" -d "{"name":"Nama Baru via cURL"}"
      ```
-
-## 5. Catatan dan Asumsi
-
-- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
-- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
-- **Token Expiry**: Access token berlaku selama 15 menit. Gunakan refresh token untuk mendapatkan token baru.
-- **Role-Based Access**: Akses ke endpoint dikontrol berdasarkan peran. Contohnya, hanya peran **user** yang dapat mengakses `PUT /profile`.
-
 ---
 
-## 6. Cara Setup Environment & Menjalankan Server
-
-1. **Instalasi Dependensi**:
-
-   Pastikan Anda telah menginstal dependensi yang dibutuhkan dengan perintah berikut:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Konfigurasi .env**:
-
-   Buat file `.env` di direktori root proyek dan masukkan variabel berikut:
-
-   ```bash
-   JWT_SECRET=your_secret_here
-   PORT=5000
-   ```
-
-   Gantilah `your_secret_here` dengan kunci rahasia yang Anda inginkan.
-
-3. **Menjalankan Server**:
-
-   Setelah semua dependensi terinstal dan konfigurasi selesai, jalankan aplikasi Flask dengan perintah:
-
-   ```bash
-   python app.py
-   ```
-
-   Server akan berjalan di `http://localhost:5000`.
-
----
-
-## 7. Variabel Environment yang Diperlukan
-
-- `JWT_SECRET`: Kunci rahasia untuk menandatangani token JWT.
-- `PORT`: Port tempat server akan dijalankan (default: `5000`).
-
----
-
-## 8. Daftar Endpoint + Skema Request/Response
+## 5. Daftar Endpoint + Skema Request/Response
 
 ### 1. **POST `/auth/login`**
 
@@ -310,7 +262,7 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 
 ---
 
-## 9. Contoh cURL (Wajib) atau Postman (Koleksi Diekspor)
+## 6. Contoh cURL (Wajib) atau Postman (Koleksi Diekspor)
 
 ### 1. **Login dan Dapatkan JWT**
 
@@ -365,12 +317,12 @@ Output yang akan diterima:
 
 ---
 
-## 10. Catatan Kendala/Asumsi (Jika Ada)
+## 7. Catatan Kendala/Asumsi (Jika Ada)
 
 - **Token Expiry**: Token akses berlaku selama 15 menit dan dapat diperbarui menggunakan **refresh token** yang berlaku selama 7 hari.
 - **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
 - **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
+- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
+- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
 
 ---
-
-Dengan ini, **README.md** Anda sudah memenuhi kriteria yang diminta dalam instruksi tugas. Jika Anda ingin menambahkan **Postman Collection** atau **screenshot uji**, beri tahu saya, dan saya akan membantu Anda menambahkannya!
