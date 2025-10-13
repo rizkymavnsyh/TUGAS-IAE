@@ -183,7 +183,7 @@ Endpoint ini digunakan untuk login dan mendapatkan token JWT.
 }
 ```
 
-#### 2\. **POST `/auth/refresh`**
+### 2\. **POST `/auth/refresh`**
 
 Endpoint ini digunakan untuk merefresh token sebelumnya.
 
@@ -285,7 +285,7 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 curl -s -X POST http://localhost:5000/auth/login   -H "Content-Type: application/json"   -d '{"email":"user1@example.com","password":"pass123"}'
 ```
 
-#### 2\. **Gunakan Refresh Token untuk Mendapatkan Token Baru**
+### 2\. **Gunakan Refresh Token untuk Mendapatkan Token Baru**
 
 ```bash
 curl -s -X POST http://localhost:5000/auth/refresh   -H "Content-Type: application/json"   -d "{"refresh_token":"$REFRESH_TOKEN"}" | jq -r .access_token)
