@@ -2,23 +2,30 @@
 
 Dokumentasi ini menyediakan panduan lengkap untuk setup, konfigurasi, dan pengujian API Marketplace yang diamankan menggunakan otentikasi **JWT**.
 
-## 1. Persiapan Lingkungan
+---
+
+## 1\. Cara Setup Environment & Menjalankan Server
 
 ### 1.1 Instalasi Dependensi
 
 Pastikan Anda memiliki **Python** dan **pip** terinstal. Kemudian, instal semua pustaka yang dibutuhkan dari `requirements.txt`.
 
-1. Buat dan aktifkan **virtual environment** (direkomendasikan):
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # atau `venv\Scriptsctivate` di Windows
-   ```
-
-2. Instal dependensi:
-   ```bash
-   pip install -r requirements.txt
-   ```
+1.  Buat dan aktifkan **virtual environment** (direkomendasikan):
+    ```bash
+    python -m venv venv
+    ```
+    **Windows:**
+    ```bash
+    venv\Scripts\Activate
+    ```
+    **macOS/Linux:**
+    ```bash
+    source venv/bin/activate
+    ```
+2.  Instal dependensi:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ### 1.2 Konfigurasi Environment
 
@@ -54,9 +61,24 @@ Setelah semua persiapan selesai, jalankan server aplikasi:
 python app.py
 ```
 
-Server akan berjalan di [http://localhost:5000](http://localhost:5000).
+Server akan berjalan di [http://localhost:5000](https://www.google.com/search?q=http://localhost:5000).
 
-## 2. Peran Pengguna (User Roles)
+---
+
+## 2\. Variabel Environment yang Diperlukan
+
+Variabel berikut harus ada di dalam file `.env` Anda:
+
+- `JWT_SECRET`: Kunci rahasia yang digunakan untuk menandatangani token JWT.
+- `PORT`: Port tempat server akan berjalan.
+- `DB_HOST`: Host dari database MySQL Anda.
+- `DB_USER`: Nama pengguna untuk database MySQL Anda.
+- `DB_PASSWORD`: Kata sandi untuk database MySQL Anda.
+- `DB_NAME`: Nama database MySQL Anda.
+
+---
+
+## 3\. Peran Pengguna (User Roles)
 
 Aplikasi ini memiliki dua jenis peran pengguna dengan hak akses yang berbeda.
 
@@ -65,160 +87,57 @@ Aplikasi ini memiliki dua jenis peran pengguna dengan hak akses yang berbeda.
 | user      | Peran standar untuk pengguna. Dapat melihat item dan memperbarui profil sendiri.                               | email: `user1@example.com`, pass: `pass123`  |
 | admin     | Peran untuk administrator. Memiliki hak akses yang berbeda dan tidak dapat mengakses endpoint profil pengguna. | email: `admin@example.com`, pass: `admin123` |
 
-## 3. Daftar Endpoint
+---
 
-| **Method** | **Endpoint**  | **Keamanan** | **Deskripsi**                              |
-| ---------- | ------------- | ------------ | ------------------------------------------ |
-| POST       | /auth/login   | Publik       | Login untuk mendapatkan token JWT.         |
-| POST       | /auth/refresh | Publik       | Memperbarui access token yang kedaluwarsa. |
-| GET        | /items        | Publik       | Mendapatkan daftar item marketplace.       |
-| PUT        | /profile      | JWT          | Memperbarui profil pengguna (hanya user).  |
+## 4\. Daftar Endpoint
 
-## 4. Panduan Pengujian API
+| **Method** | **Endpoint** | **Keamanan** | **Deskripsi**                             |
+| ---------- | ------------ | ------------ | ----------------------------------------- |
+| POST       | /auth/login  | Publik       | Login untuk mendapatkan token JWT.        |
+| GET        | /items       | Publik       | Mendapatkan daftar item marketplace.      |
+| PUT        | /profile     | JWT          | Memperbarui profil pengguna (hanya user). |
 
-### 4.1 Menggunakan Swagger UI (Interaktif)
+---
 
-Cara termudah untuk mencoba API secara visual.
+## 5\. Panduan Pengujian API
 
-1. **Buka Dokumentasi**: Setelah server berjalan, buka [http://localhost:5000/swagger](http://localhost:5000/swagger) di browser Anda.
-
-2. **Login**:
-
-   - Buka endpoint `POST /auth/login`.
-   - Klik "Try it out".
-   - Masukkan JSON berikut di Request body:
-     ```json
-     {
-       "email": "user1@example.com",
-       "password": "pass123"
-     }
-     ```
-   - Klik "Execute". Salin `access_token` dari respons.
-
-3. **Get Items (Publik)**:
-
-   - Buka endpoint `GET /items`.
-   - Klik "Try it out".
-   - Klik "Execute". Anda akan melihat daftar item di respons.
-
-4. **Otorisasi**:
-
-   - Klik tombol hijau "Authorize" di bagian atas halaman.
-   - Di dalam popup, tempelkan token yang sudah Anda salin dengan format `Bearer <token_anda>`.
-   - Klik "Authorize" lalu "Close".
-
-5. **Akses Endpoint Terproteksi**:
-   - Sekarang, coba buka endpoint `PUT /profile`.
-   - Klik "Try it out" dan masukkan data baru di Request body.
-   - Klik "Execute". Permintaan akan berhasil karena Anda menggunakan token user.
-
-### 4.2 Menggunakan Postman
+### 5.1 Menggunakan Postman
 
 Cocok untuk pengujian yang lebih kompleks dan berulang.
 
-1. **Request Login**:
+1.  **Request Login**:
 
-   - Buat request baru: `POST http://localhost:5000/auth/login`.
-   - Buka tab Body, pilih raw dan JSON, lalu masukkan kredensial.
-   - Untuk menyimpan token secara otomatis, buka tab Tests dan tambahkan:
-     ```javascript
-     const data = pm.response.json();
-     pm.collectionVariables.set('jwt_token', data.access_token);
-     ```
+    - Buat request baru: `POST http://localhost:5000/auth/login`.
+    - Buka tab **Body**, pilih **raw** dan **JSON**, lalu masukkan kredensial:
+      ```json
+      {
+        "email": "user1@example.com",
+        "password": "pass123"
+      }
+      ```
+    - Untuk menyimpan token secara otomatis, buka tab **Tests** dan tambahkan:
+      ```javascript
+      const data = pm.response.json();
+      pm.collectionVariables.set('jwt_token', data.access_token);
+      ```
 
-2. **Request Get Items**:
+2.  **Request Get Items**:
 
-   - Buat request baru: `GET http://localhost:5000/items`.
-   - Tidak perlu otorisasi atau body.
-   - Kirim request.
+    - Buat request baru: `GET http://localhost:5000/items`.
+    - Tidak perlu otorisasi atau body. Kirim request.
 
-3. **Request Update Profile**:
-   - Buat request baru: `PUT http://localhost:5000/profile`.
-   - Buka tab Authorization, pilih Bearer Token, dan masukkan `{{jwt_token}}` di kolom Token.
-   - Buka tab Body, pilih raw dan JSON, lalu masukkan data profil yang ingin diubah.
-   - Kirim request.
+3.  **Request Update Profile**:
 
-### 4.3 Menggunakan cURL (Terminal)
-
-Untuk pengujian cepat dari command line.
-
-1. **Login (Simpan Token)**:
-
-   - Untuk Windows (CMD/PowerShell):
-
-     ```bash
-     curl -s -X POST http://localhost:5000/auth/login -H "Content-Type: application/json" -d "{"email":"user1@example.com","password":"pass123"}"
-     ```
-
-   - Untuk Linux/macOS:
-     ```bash
-     TOKEN=$(curl -s -X POST http://localhost:5000/auth/login         -H "Content-Type: application/json"         -d '{"email":"user1@example.com","password":"pass123"}' | jq -r .access_token)
-     ```
-
-2. **Get Items (Publik)**:
-
-   ```bash
-   curl -s http://localhost:5000/items
-   ```
-
-3. **Update Profile (Gunakan Token)**:
-   - Ganti `<TOKEN_ANDA>` dengan token dari langkah sebelumnya:
-     ```bash
-     curl -s -X PUT http://localhost:5000/profile -H "Authorization: Bearer <TOKEN_ANDA>" -H "Content-Type: application/json" -d "{"name":"Nama Baru via cURL"}"
-     ```
-
-## 5. Catatan dan Asumsi
-
-- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
-- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
-- **Token Expiry**: Access token berlaku selama 15 menit. Gunakan refresh token untuk mendapatkan token baru.
-- **Role-Based Access**: Akses ke endpoint dikontrol berdasarkan peran. Contohnya, hanya peran **user** yang dapat mengakses `PUT /profile`.
+    - Buat request baru: `PUT http://localhost:5000/profile`.
+    - Buka tab **Authorization**, pilih **Bearer Token**, dan masukkan `{{jwt_token}}` di kolom Token.
+    - Buka tab **Body**, pilih **raw** dan **JSON**, lalu masukkan data profil yang ingin diubah.
+    - Kirim request.
 
 ---
 
-## 6. Cara Setup Environment & Menjalankan Server
+## 6\. Daftar Endpoint + Skema Request/Response
 
-1. **Instalasi Dependensi**:
-
-   Pastikan Anda telah menginstal dependensi yang dibutuhkan dengan perintah berikut:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Konfigurasi .env**:
-
-   Buat file `.env` di direktori root proyek dan masukkan variabel berikut:
-
-   ```bash
-   JWT_SECRET=your_secret_here
-   PORT=5000
-   ```
-
-   Gantilah `your_secret_here` dengan kunci rahasia yang Anda inginkan.
-
-3. **Menjalankan Server**:
-
-   Setelah semua dependensi terinstal dan konfigurasi selesai, jalankan aplikasi Flask dengan perintah:
-
-   ```bash
-   python app.py
-   ```
-
-   Server akan berjalan di `http://localhost:5000`.
-
----
-
-## 7. Variabel Environment yang Diperlukan
-
-- `JWT_SECRET`: Kunci rahasia untuk menandatangani token JWT.
-- `PORT`: Port tempat server akan dijalankan (default: `5000`).
-
----
-
-## 8. Daftar Endpoint + Skema Request/Response
-
-### 1. **POST `/auth/login`**
+### 1\. **POST `/auth/login`**
 
 Endpoint ini digunakan untuk login dan mendapatkan token JWT.
 
@@ -248,9 +167,7 @@ Endpoint ini digunakan untuk login dan mendapatkan token JWT.
 }
 ```
 
----
-
-### 2. **GET `/items`** (Publik)
+### 2\. **GET `/items`** (Publik)
 
 Endpoint ini mengembalikan daftar item marketplace yang dapat diakses tanpa autentikasi.
 
@@ -265,9 +182,7 @@ Endpoint ini mengembalikan daftar item marketplace yang dapat diakses tanpa aute
 }
 ```
 
----
-
-### 3. **PUT `/profile`** (Terproteksi - JWT)
+### 3\. **PUT `/profile`** (Terproteksi - JWT)
 
 Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT yang valid di header Authorization.
 
@@ -308,69 +223,43 @@ Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT 
 }
 ```
 
+**Response (Error - 404):**
+
+```json
+{
+  "error": "User not found during update"
+}
+```
+
 ---
 
-## 9. Contoh cURL (Wajib) atau Postman (Koleksi Diekspor)
+## 7\. Contoh cURL
 
-### 1. **Login dan Dapatkan JWT**
+### 1\. **Login dan Dapatkan JWT**
 
 ```bash
 curl -s -X POST http://localhost:5000/auth/login   -H "Content-Type: application/json"   -d '{"email":"user1@example.com","password":"pass123"}'
 ```
 
-Output yang akan diterima:
-
-```json
-{
-  "access_token": "<JWT>",
-  "refresh_token": "<Refresh JWT>"
-}
-```
-
-### 2. **Akses Daftar Item Marketplace (Publik)**
+### 2\. **Akses Daftar Item Marketplace (Publik)**
 
 ```bash
 curl -s http://localhost:5000/items
 ```
 
-Output yang akan diterima:
-
-```json
-{
-  "items": [
-    { "id": 1, "name": "Item 1", "price": 12345 },
-    { "id": 2, "name": "Item 2", "price": 67890 }
-  ]
-}
-```
-
-### 3. **Update Profil Pengguna (Dengan JWT)**
+### 3\. **Update Profil Pengguna (Dengan JWT)**
 
 ```bash
 TOKEN="<paste_JWT_from_login>"
 curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"name":"Updated Name"}'
 ```
 
-Output yang akan diterima:
-
-```json
-{
-  "message": "Profile updated",
-  "profile": {
-    "name": "Updated Name",
-    "email": "updated@example.com"
-  }
-}
-```
-
 ---
 
-## 10. Catatan Kendala/Asumsi (Jika Ada)
+## 8\. Catatan Kendala/Asumsi
 
 - **Token Expiry**: Token akses berlaku selama 15 menit dan dapat diperbarui menggunakan **refresh token** yang berlaku selama 7 hari.
 - **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
 - **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
-
----
-
-Dengan ini, **README.md** Anda sudah memenuhi kriteria yang diminta dalam instruksi tugas. Jika Anda ingin menambahkan **Postman Collection** atau **screenshot uji**, beri tahu saya, dan saya akan membantu Anda menambahkannya!
+- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
+- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.

@@ -92,6 +92,9 @@
           },
           "403": {
             "description": "Permission denied"
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }
