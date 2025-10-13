@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
 from functools import wraps
@@ -8,55 +10,46 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 import logging
 
-# Load environment variables
 load_dotenv()
 
-# In-memory user data (demo purpose)
-users = {
-    "user1@example.com": {
-        "password": "pass123",  # In real-world, use hashed passwords
-        "name": "User One",
-        "email": "user1@example.com",
-        "role": "user"  # role-based access: user
-    },
-    "admin@example.com": {
-        "password": "admin123",
-        "name": "Admin User",
-        "email": "admin@example.com",
-        "role": "admin"  # admin role for access control
-    }
-}
-
-# Setup Flask application and enable CORS
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}}) 
 app.config['JWT_SECRET'] = os.getenv('JWT_SECRET')
 
-# Configure logging
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Setup Swagger UI for OpenAPI Documentation
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'  # File JSON that contains OpenAPI specs
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256))
+    name = db.Column(db.String(100))
+    role = db.Column(db.String(50), nullable=False, default='user')
 
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
-    config={
-        'app_name': "JWT Marketplace API",
-        'auth': {
-            'bearer': {
-                'name': 'Authorization',
-                'description': 'Enter your Bearer token',
-                'token': 'Bearer <JWT>'
-            }
-        }
-    }
+    config={'app_name': "JWT Marketplace API"}
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
-# Decorator to protect routes that require authentication
 def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -73,9 +66,14 @@ def token_required(f):
 
         try:
             data = jwt.decode(token, app.config['JWT_SECRET'], algorithms=["HS256"])
-            current_user = users.get(data['email'])
-            if current_user is None:
+            user = User.query.filter_by(email=data['email']).first()
+            if user is None:
                 return jsonify({"error": "User not found"}), 401
+            current_user = {
+                "email": user.email,
+                "name": user.name,
+                "role": user.role
+            }
         except jwt.ExpiredSignatureError:
             return jsonify({"error": "Token expired"}), 401
         except jwt.InvalidTokenError:
@@ -85,7 +83,6 @@ def token_required(f):
 
     return decorated_function
 
-# Route for login to obtain JWT
 @app.route('/auth/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -94,21 +91,19 @@ def login():
 
     logger.info(f"Login attempt: {email}")
 
-    if email in users and users[email]['password'] == password:
+    user = User.query.filter_by(email=email).first()
+
+    if user and user.check_password(password):
         expiration_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
         refresh_expiration_time = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+        
         token = jwt.encode({
-            'sub': email,
-            'email': email,
-            'role': users[email]['role'],
-            'name': users[email]['name'],
-            'exp': expiration_time
+            'sub': user.email, 'email': user.email, 'role': user.role,
+            'name': user.name, 'exp': expiration_time
         }, app.config['JWT_SECRET'], algorithm='HS256')
 
         refresh_token = jwt.encode({
-            'sub': email,
-            'email': email,
-            'exp': refresh_expiration_time
+            'sub': user.email, 'email': user.email, 'exp': refresh_expiration_time
         }, app.config['JWT_SECRET'], algorithm='HS256')
 
         logger.info(f"Login successful: {email}")
@@ -117,7 +112,6 @@ def login():
     logger.warning(f"Invalid credentials for {email}")
     return jsonify({"error": "Invalid credentials"}), 401
 
-# Route for refresh token
 @app.route('/auth/refresh', methods=['POST'])
 def refresh_token():
     data = request.get_json()
@@ -128,7 +122,9 @@ def refresh_token():
 
     try:
         data = jwt.decode(refresh_token, app.config['JWT_SECRET'], algorithms=["HS256"])
-        current_user = users.get(data['email'])
+        user = User.query.filter_by(email=data['email']).first()
+        if not user:
+            return jsonify({"error": "User not found"}), 401
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Refresh token expired"}), 401
     except jwt.InvalidTokenError:
@@ -136,16 +132,12 @@ def refresh_token():
 
     expiration_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
     token = jwt.encode({
-        'sub': data['email'],
-        'email': data['email'],
-        'role': current_user['role'],
-        'name': current_user['name'],
-        'exp': expiration_time
+        'sub': user.email, 'email': user.email, 'role': user.role,
+        'name': user.name, 'exp': expiration_time
     }, app.config['JWT_SECRET'], algorithm='HS256')
 
     return jsonify({'access_token': token})
 
-# Public endpoint for items
 @app.route('/items', methods=['GET'])
 def get_items():
     items = [
@@ -154,7 +146,6 @@ def get_items():
     ]
     return jsonify({"items": items})
 
-# Protected endpoint for profile update
 @app.route('/profile', methods=['PUT'])
 @token_required
 def update_profile(current_user):
@@ -164,17 +155,25 @@ def update_profile(current_user):
         logger.warning(f"Permission denied for {current_user['email']}")
         return jsonify({"error": "Permission denied"}), 403
 
+    user_to_update = User.query.filter_by(email=current_user['email']).first()
+    if not user_to_update:
+        return jsonify({"error": "User not found during update"}), 404
+
     data = request.get_json()
-    name = data.get('name')
-    email = data.get('email')
+    if data.get('name'):
+        user_to_update.name = data.get('name')
+    if data.get('email'):
+        user_to_update.email = data.get('email')
+    
+    db.session.commit()
 
-    if name:
-        current_user['name'] = name
-    if email:
-        current_user['email'] = email
-
-    logger.info(f"Profile updated for {current_user['email']}")
-    return jsonify({"message": "Profile updated", "profile": current_user})
+    logger.info(f"Profile updated for {user_to_update.email}")
+    return jsonify({
+        "message": "Profile updated", 
+        "profile": {"name": user_to_update.name, "email": user_to_update.email}
+    })
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(port=5000)
