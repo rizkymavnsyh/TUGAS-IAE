@@ -513,17 +513,17 @@ curl --request POST --url http://localhost:5000/auth/login --header "Content-Typ
 
 Jika sudah mengonfigurasi proyek dengan **Makefile**, dapat dilanjutkan dengan menggunakan perintah berikut untuk menjalankan semua pengujian secara otomatis:
 
-1. **Menjalankan Tes**:
-    - Cukup jalankan perintah ini di terminal:
-    ```bash
-    make test
-    ```
-    - Ini akan menjalankan semua pengujian yang telah didefinisikan dalam proyek menggunakan `pytest`.
-    - Hasil tes akan ditampilkan di terminal, dan akan melihat informasi seperti berikut:
+**Menjalankan Tes**:
+- Cukup jalankan perintah ini di terminal:
+```bash
+make test
+```
+- Ini akan menjalankan semua pengujian yang telah didefinisikan dalam proyek menggunakan `pytest`.
+- Hasil tes akan ditampilkan di terminal, dan akan melihat informasi seperti berikut:
 
-    **Screenshot**:
-    <img width="1443" height="272" alt="image" src="https://github.com/user-attachments/assets/139f7cb2-5eb1-48cc-9db9-96dfef8ea1e2" />
-    Dalam contoh ini, **semua tes berhasil** (5 passed), yang menunjukkan bahwa aplikasi berfungsi seperti yang diharapkan.
+**Screenshot**:
+<img width="1443" height="272" alt="image" src="https://github.com/user-attachments/assets/139f7cb2-5eb1-48cc-9db9-96dfef8ea1e2" />
+Dalam contoh ini, **semua tes berhasil** (5 passed), yang menunjukkan bahwa aplikasi berfungsi seperti yang diharapkan.
 
 ## 8\. Catatan Kendala/Asumsi
 
