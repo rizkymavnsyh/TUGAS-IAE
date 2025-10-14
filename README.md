@@ -459,7 +459,7 @@ curl --request PUT --url http://localhost:5000/profile --header "Content-Type: a
 ### 4. **Update Profile (Permission Denied) Request**
 
 ```bash
-curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_admin_token>" --data "{\"name\": \"Nama Baru Dari Postman\", \"email\": \"new.email@example.com\"}"
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_admin_token>" --data "{\"name\": \"Nama Baru Dari Postman\", \"email\": \"new.email1@example.com\"}"
 ```
 **Screenshot**:
 <img width="1892" height="132" alt="Update Profile 403" src="https://github.com/user-attachments/assets/32353a2d-5791-4392-a371-19752285a44a" />
