@@ -324,8 +324,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 {
   "message": "Profile updated",
   "profile": {
-    "name": "Nama Baru Dari Postman",
-    "email": "new.email1@example.com"
+    "email": "new.email1@example.com",
+    "name": "Nama Baru Dari Postman"
   }
 }
 ```
