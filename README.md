@@ -314,7 +314,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```json
 {
   "name": "Nama Baru Dari Postman",
-  "email": "new.email1@example.com"
+  "email": "new.email@example.com"
 }
 ```
 
@@ -324,7 +324,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 {
   "message": "Profile updated",
   "profile": {
-    "email": "new.email1@example.com",
+    "email": "new.email@example.com",
     "name": "Nama Baru Dari Postman"
   }
 }
