@@ -529,6 +529,6 @@ Dalam contoh ini, **semua tes berhasil** (5 passed), yang menunjukkan bahwa apli
 
 - **Token Expiry**: Token akses berlaku selama 15 menit dan dapat diperbarui menggunakan **refresh token** yang berlaku selama 7 hari.
 - **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
-- **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
+- **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/apidocs`.
 - **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL sedang berjalan.
 - **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi. 
