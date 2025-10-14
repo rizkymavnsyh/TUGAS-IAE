@@ -153,178 +153,15 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 
 ## 6\. Daftar Endpoint + Skema Request/Response
 
-### 1\. **POST `/auth/login`**
-
-Endpoint ini digunakan untuk login dan mendapatkan token JWT.
-
-**Request:**
-
-```json
-{
-  "email": "user1@example.com",
-  "password": "pass123"
-}
-```
-
-**Response (Sukses - 200):**
-
-```json
-{
-  "access_token": "<JWT>",
-  "refresh_token": "<Refresh JWT>"
-}
-```
-
-**Response (Error - 401):**
-
-```json
-{
-  "error": "Invalid credentials"
-}
-```
-
-### 2\. **POST `/auth/refresh`**
-
-Endpoint ini digunakan untuk merefresh token sebelumnya.
-
-**Request:**
-
-```json
-{
-  "refresh_token": "<Refresh JWT>"
-}
-```
-
-**Response (Sukses - 200):**
-
-```json
-{
-  "access_token": "<New JWT>"
-}
-```
-
-**Response (Error - 401):**
-
-```json
-{
-  "error": "Refresh token expired"
-}
-```
-
-### 3\. **GET `/items`** (Publik)
-
-Endpoint ini mengembalikan daftar item marketplace yang dapat diakses tanpa autentikasi.
-
-**Response (Sukses - 200):**
-
-```json
-{
-  "items": [
-    { "id": 1, "name": "Item 1", "price": 12345 },
-    { "id": 2, "name": "Item 2", "price": 67890 }
-  ]
-}
-```
-
-### 4\. **PUT `/profile`** (Terproteksi - JWT)
-
-Endpoint ini digunakan untuk memperbarui profil pengguna. Harus menggunakan JWT yang valid di header Authorization.
-
-**Request:**
-
-```json
-{
-  "name": "Updated Name",
-  "email": "updated@example.com"
-}
-```
-
-**Response (Sukses - 200):**
-
-```json
-{
-  "message": "Profile updated",
-  "profile": {
-    "name": "Updated Name",
-    "email": "updated@example.com"
-  }
-}
-```
-
-**Response (Error - 401):**
-
-```json
-{
-  "error": "Invalid token"
-}
-```
-
-**Response (Error - 403):**
-
-```json
-{
-  "error": "Permission denied"
-}
-```
-
-**Response (Error - 404):**
-
-```json
-{
-  "error": "User not found"
-}
-```
-
----
-
-## 7\. Contoh cURL
-
-### 1\. **Login dan Dapatkan JWT**
-
-```bash
-curl -s -X POST http://localhost:5000/auth/login   -H "Content-Type: application/json"   -d '{"email":"user1@example.com","password":"pass123"}'
-```
-
-### 2\. **Gunakan Refresh Token untuk Mendapatkan Token Baru**
-
-```bash
-curl -s -X POST http://localhost:5000/auth/refresh   -H "Content-Type: application/json"   -d "{"refresh_token":"$REFRESH_TOKEN"}" | jq -r .access_token)
-```
-
-### 3\. **Akses Daftar Item Marketplace (Publik)**
-
-```bash
-curl -s http://localhost:5000/items
-```
-
-### 4\. **Update Profil Pengguna (Dengan JWT)**
-
-```bash
-TOKEN="<paste_JWT_from_login>"
-curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"name":"Updated Name"}'
-```
-
----
-
-## 8\. Catatan Kendala/Asumsi
-
-- **Token Expiry**: Token akses berlaku selama 15 menit dan dapat diperbarui menggunakan **refresh token** yang berlaku selama 7 hari.
-- **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
-- **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
-- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
-- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
-- 
-
-
-## 10. Postman Example Requests
-
 ### 1. **Refresh Token (Invalid)**
 
 #### Request:
+
 - Method: `POST`
 - Endpoint: `http://localhost:5000/auth/refresh`
 
 **Body**:
+
 ```json
 {
   "refresh_token": "This is not refresh_token"
@@ -332,6 +169,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Error - 401):
+
 ```json
 {
   "error": "Refresh token is invalid"
@@ -339,8 +177,6 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 **Screenshot**:
-<img width="1918" height="1020" alt="refresh token gagal" src="https://github.com/user-attachments/assets/5de907a6-037d-4648-94e6-b1d220a945b2" />
-
 ![Refresh Token Invalid](sandbox:/mnt/data/refresh%20token%20gagal.png)
 
 ---
@@ -348,10 +184,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 2. **Update Profile (User Not Found)**
 
 #### Request:
+
 - Method: `PUT`
 - Endpoint: `http://localhost:5000/profile`
 
 **Body**:
+
 ```json
 {
   "name": "Nama Baru Dari Postman",
@@ -360,6 +198,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Error - 404):
+
 ```json
 {
   "error": "User not found"
@@ -374,10 +213,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 3. **Update Profile (Token Invalid)**
 
 #### Request:
+
 - Method: `PUT`
 - Endpoint: `http://localhost:5000/profile`
 
 **Body**:
+
 ```json
 {
   "name": "Nama Baru Dari Postman",
@@ -386,6 +227,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Error - 401):
+
 ```json
 {
   "error": "Token is invalid"
@@ -400,10 +242,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 4. **Update Profile (Role Admin Denied)**
 
 #### Request:
+
 - Method: `PUT`
 - Endpoint: `http://localhost:5000/profile`
 
 **Body**:
+
 ```json
 {
   "name": "Nama Baru Dari Postman",
@@ -412,6 +256,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Error - 403):
+
 ```json
 {
   "error": "Permission denied"
@@ -426,10 +271,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 5. **Login User (Invalid Credentials)**
 
 #### Request:
+
 - Method: `POST`
 - Endpoint: `http://localhost:5000/auth/login`
 
 **Body**:
+
 ```json
 {
   "email": "user1@example.com",
@@ -438,6 +285,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Error - 401):
+
 ```json
 {
   "error": "Invalid credentials"
@@ -452,10 +300,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 6. **Update Profile (Successful)**
 
 #### Request:
+
 - Method: `PUT`
 - Endpoint: `http://localhost:5000/profile`
 
 **Body**:
+
 ```json
 {
   "name": "Nama Baru Dari Postman",
@@ -464,6 +314,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Success - 200):
+
 ```json
 {
   "message": "Profile updated",
@@ -482,10 +333,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 7. **Get Items (Successful)**
 
 #### Request:
+
 - Method: `GET`
 - Endpoint: `http://localhost:5000/items`
 
 #### Response (Success - 200):
+
 ```json
 {
   "items": [
@@ -511,10 +364,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 8. **Refresh Token (Successful)**
 
 #### Request:
+
 - Method: `POST`
 - Endpoint: `http://localhost:5000/auth/refresh`
 
 **Body**:
+
 ```json
 {
   "refresh_token": "<your_valid_refresh_token>"
@@ -522,6 +377,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Success - 200):
+
 ```json
 {
   "access_token": "<new_valid_token>"
@@ -536,10 +392,12 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ### 9. **Login User (Successful)**
 
 #### Request:
+
 - Method: `POST`
 - Endpoint: `http://localhost:5000/auth/login`
 
 **Body**:
+
 ```json
 {
   "email": "user1@example.com",
@@ -548,6 +406,7 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Response (Success - 200):
+
 ```json
 {
   "access_token": "<JWT>",
@@ -558,4 +417,66 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 **Screenshot**:
 ![Login Berhasil](sandbox:/mnt/data/Login%20berhasil.png)
 
+## 7\. Contoh cURL
 
+### 1. **Refresh Token (Invalid) Request**
+
+```bash
+curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{"refresh_token": "This is not refresh_token"}"
+```
+
+### 2. **Update Profile (User Not Found) Request**
+
+```bash
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+```
+
+### 3. **Update Profile (Token Invalid) Request**
+
+```bash
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_invalid_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+```
+
+### 4. **Update Profile (Permission Denied) Request**
+
+```bash
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_admin_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+```
+
+### 5. **Login User (Invalid Credentials) Request**
+
+```bash
+curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{"email": "user1@example.com", "password": "pass123"}"
+```
+
+### 6. **Update Profile (Successful) Request**
+
+```bash
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_valid_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+```
+
+### 7. **Get Items (Successful) Request**
+
+```bash
+curl --request GET --url http://localhost:5000/items --header "Authorization: Bearer <your_valid_token>"
+```
+
+### 8. **Refresh Token (Successful) Request**
+
+```bash
+curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{"refresh_token": "<your_valid_refresh_token>"}"
+```
+
+### 9. **Login User (Successful) Request**
+
+```bash
+curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{"email": "user1@example.com", "password": "pass123"}"
+```
+
+## 8\. Catatan Kendala/Asumsi
+
+- **Token Expiry**: Token akses berlaku selama 15 menit dan dapat diperbarui menggunakan **refresh token** yang berlaku selama 7 hari.
+- **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
+- **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
+- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
+- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
