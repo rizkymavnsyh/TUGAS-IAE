@@ -177,7 +177,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Refresh Token Invalid](sandbox:/mnt/data/refresh%20token%20gagal.png)
+<img width="1918" height="1020" alt="refresh token gagal" src="https://github.com/user-attachments/assets/f70f4919-9487-42f9-865b-6f048c8a522f" />
+
 
 ---
 
@@ -206,7 +207,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Update Profile User Not Found](sandbox:/mnt/data/Update%20Profile%20User%20Not%20Found.png)
+<img width="1918" height="1021" alt="Update Profile User Not Found" src="https://github.com/user-attachments/assets/f51bbcfc-1863-4293-8c3d-64141ca6b243" />
+
 
 ---
 
@@ -235,7 +237,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Update Profile Token Invalid](sandbox:/mnt/data/Update%20Profile%20Token%20Invalid.png)
+<img width="1918" height="1020" alt="Update Profile Token Invalid" src="https://github.com/user-attachments/assets/a40e3110-c3ec-4979-bc60-fffd5e77cba8" />
+
 
 ---
 
@@ -264,7 +267,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Update Profile Role Admin Gagal](sandbox:/mnt/data/Update%20Profile%20Role%20Admin%20Gagal.png)
+<img width="1918" height="1017" alt="Update Profile Role Admin Gagal" src="https://github.com/user-attachments/assets/0273aa47-99c5-4cd2-9bf6-cea85da375c0" />
+
 
 ---
 
@@ -293,7 +297,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Login Error 401](sandbox:/mnt/data/Login%20error%20401.png)
+<img width="1918" height="1017" alt="Login error 401" src="https://github.com/user-attachments/assets/64225fe8-2568-499c-81bf-f7c4fb28503f" />
+
 
 ---
 
@@ -326,7 +331,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Update Profile Berhasil](sandbox:/mnt/data/Update%20Profile%20Berhasil.png)
+<img width="1918" height="1021" alt="Update Profile Berhasil" src="https://github.com/user-attachments/assets/8062e400-07e7-4353-a0b1-faa2c9d79f26" />
+
 
 ---
 
@@ -357,7 +363,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Get Items Berhasil](sandbox:/mnt/data/Get%20Items%20Berhasil.png)
+<img width="1918" height="1017" alt="Get Items Berhasil" src="https://github.com/user-attachments/assets/07e8892b-43f6-4f24-b3b2-e11c12dff8b6" />
 
 ---
 
@@ -385,7 +391,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Refresh Token Berhasil](sandbox:/mnt/data/refresh%20token%20berhasil.png)
+<img width="1918" height="1017" alt="refresh token berhasil" src="https://github.com/user-attachments/assets/50468d8d-9702-4581-a0f9-bf550c1485d0" />
+
 
 ---
 
@@ -415,7 +422,8 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ```
 
 **Screenshot**:
-![Login Berhasil](sandbox:/mnt/data/Login%20berhasil.png)
+<img width="1918" height="1015" alt="Login berhasil" src="https://github.com/user-attachments/assets/ea9a4c59-b74d-480b-ab1c-fd8018cf0be8" />
+
 
 ## 7\. Contoh cURL
 
