@@ -339,6 +339,8 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 ```
 
 **Screenshot**:
+<img width="1918" height="1020" alt="refresh token gagal" src="https://github.com/user-attachments/assets/5de907a6-037d-4648-94e6-b1d220a945b2" />
+
 ![Refresh Token Invalid](sandbox:/mnt/data/refresh%20token%20gagal.png)
 
 ---
