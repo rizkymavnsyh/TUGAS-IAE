@@ -8,7 +8,7 @@ Dokumentasi ini menyediakan panduan lengkap untuk setup, konfigurasi, dan penguj
 
 ### 1.1 Instalasi Dependensi
 
-Pastikan Anda memiliki **Python** dan **pip** terinstal. Kemudian, instal semua pustaka yang dibutuhkan dari `requirements.txt`.
+Pastikan sudah memiliki **Python** dan **pip** terinstal. Kemudian, instal semua pustaka yang dibutuhkan dari `requirements.txt`.
 
 1.  Buat dan aktifkan **virtual environment** (direkomendasikan):
     ```bash
@@ -29,7 +29,7 @@ Pastikan Anda memiliki **Python** dan **pip** terinstal. Kemudian, instal semua 
 
 ### 1.2 Konfigurasi Environment
 
-Buat file `.env` di direktori utama dan isi dengan variabel berikut. Ganti nilai placeholder dengan data Anda.
+Buat file `.env` di direktori utama dan isi dengan variabel berikut. Ganti nilai placeholder dengan data ini.
 
 ```ini
 # Kunci rahasia untuk JWT
@@ -67,14 +67,14 @@ Server akan berjalan di [http://localhost:5000](https://www.google.com/search?q=
 
 ## 2\. Variabel Environment yang Diperlukan
 
-Variabel berikut harus ada di dalam file `.env` Anda:
+Variabel berikut harus ada di dalam file `.env`:
 
 - `JWT_SECRET`: Kunci rahasia yang digunakan untuk menandatangani token JWT.
 - `PORT`: Port tempat server akan berjalan.
-- `DB_HOST`: Host dari database MySQL Anda.
-- `DB_USER`: Nama pengguna untuk database MySQL Anda.
-- `DB_PASSWORD`: Kata sandi untuk database MySQL Anda.
-- `DB_NAME`: Nama database MySQL Anda.
+- `DB_HOST`: Host dari database MySQL.
+- `DB_USER`: Nama pengguna untuk database MySQL.
+- `DB_PASSWORD`: Kata sandi untuk database MySQL.
+- `DB_NAME`: Nama database MySQL.
 
 ---
 
@@ -120,6 +120,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
       ```javascript
       const data = pm.response.json();
       pm.collectionVariables.set('jwt_token', data.access_token);
+      pm.collectionVariables.set('refresh_token', data.refresh_token);
       ```
 
 2.  **Request Refresh Token**:
@@ -131,7 +132,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
         "refresh_token": "{{refresh_token}}"
       }
       ```
-    - Untuk memperbarui _access token_ Anda secara otomatis, tambahkan skrip berikut di tab **Scripts** lalu pilih Post-response:
+    - Untuk memperbarui _access token_ secara otomatis, tambahkan skrip berikut di tab **Scripts** lalu pilih Post-response:
       ```javascript
       const data = pm.response.json();
       pm.collectionVariables.set('jwt_token', data.access_token);
@@ -433,58 +434,86 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{"refresh_token": "This is not refresh_token"}"
 ```
 
+**Screenshot**:
+<img width="1898" height="80" alt="refresh token 401" src="https://github.com/user-attachments/assets/fac9e110-8d36-49ab-b6fb-f136c73b22d5" />
+
+
 ### 2. **Update Profile (User Not Found) Request**
 
 ```bash
 curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
 ```
+**Screenshot**:
+<img width="1886" height="137" alt="Update Profile 404" src="https://github.com/user-attachments/assets/8cb5c53d-e95c-4249-9d09-f7a83600d650" />
+
 
 ### 3. **Update Profile (Token Invalid) Request**
 
 ```bash
 curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_invalid_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
 ```
+**Screenshot**:
+<img width="1897" height="121" alt="Update Profile 401" src="https://github.com/user-attachments/assets/ef077a3d-e045-493c-a201-caff7ce8b126" />
+
 
 ### 4. **Update Profile (Permission Denied) Request**
 
 ```bash
 curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_admin_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
 ```
+**Screenshot**:
+<img width="1892" height="132" alt="Update Profile 403" src="https://github.com/user-attachments/assets/32353a2d-5791-4392-a371-19752285a44a" />
+
 
 ### 5. **Login User (Invalid Credentials) Request**
 
 ```bash
 curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{"email": "user1@example.com", "password": "pass123"}"
 ```
+**Screenshot**:
+<img width="1888" height="85" alt="Login user 401" src="https://github.com/user-attachments/assets/04c3cd69-bbbb-41c9-8ab9-f9bcf521947e" />
+
 
 ### 6. **Update Profile (Successful) Request**
 
 ```bash
 curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_valid_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
 ```
+**Screenshot**:
+<img width="1886" height="127" alt="Update Profile 200" src="https://github.com/user-attachments/assets/eb2511b8-ee2e-4c51-b9c0-942e928b0d7c" />
+
 
 ### 7. **Get Items (Successful) Request**
 
 ```bash
 curl --request GET --url http://localhost:5000/items --header "Authorization: Bearer <your_valid_token>"
 ```
+**Screenshot**:
+<img width="1890" height="103" alt="Get items 200" src="https://github.com/user-attachments/assets/b4f6be85-9297-4195-9b40-df2a373d27a4" />
+
 
 ### 8. **Refresh Token (Successful) Request**
 
 ```bash
 curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{"refresh_token": "<your_valid_refresh_token>"}"
 ```
+**Screenshot**:
+<img width="1886" height="127" alt="refresh token 200" src="https://github.com/user-attachments/assets/0575995b-7cba-4cce-b727-6a2a1af9f233" />
+
 
 ### 9. **Login User (Successful) Request**
 
 ```bash
 curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{"email": "user1@example.com", "password": "pass123"}"
 ```
+**Screenshot**:
+<img width="1890" height="128" alt="Login user 200" src="https://github.com/user-attachments/assets/d0db068b-dac9-4b64-b1a5-5f7c391c77fe" />
+
 
 ## 8\. Catatan Kendala/Asumsi
 
 - **Token Expiry**: Token akses berlaku selama 15 menit dan dapat diperbarui menggunakan **refresh token** yang berlaku selama 7 hari.
 - **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
 - **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
-- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
+- **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL sedang berjalan.
 - **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
