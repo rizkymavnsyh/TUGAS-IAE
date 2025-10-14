@@ -116,7 +116,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
         "password": "pass123"
       }
       ```
-    - Untuk menyimpan token secara otomatis, buka tab **Tests** dan tambahkan:
+    - Untuk menyimpan token secara otomatis, buka tab **Scripts** lalu pilih Post-response dan tambahkan:
       ```javascript
       const data = pm.response.json();
       pm.collectionVariables.set('jwt_token', data.access_token);
@@ -131,7 +131,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
         "refresh_token": "{{refresh_token}}"
       }
       ```
-    - Untuk memperbarui _access token_ Anda secara otomatis, tambahkan skrip berikut di tab **Tests**:
+    - Untuk memperbarui _access token_ Anda secara otomatis, tambahkan skrip berikut di tab **Scripts** lalu pilih Post-response:
       ```javascript
       const data = pm.response.json();
       pm.collectionVariables.set('jwt_token', data.access_token);
