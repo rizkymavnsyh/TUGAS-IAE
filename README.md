@@ -1,6 +1,6 @@
 # API Marketplace dengan JWT
 
-Dokumentasi ini menyediakan panduan lengkap untuk setup, konfigurasi, dan pengujian API Marketplace yang diamankan menggunakan otentikasi **JWT**.
+Dokumentasi ini menyediakan panduan lengkap untuk setup, konfigurasi, dan pengujian API Marketplace yang diamankan menggunakan otentikasi **JWT**. rzky
 
 ---
 
@@ -531,4 +531,4 @@ Dalam contoh ini, **semua tes berhasil** (5 passed), yang menunjukkan bahwa apli
 - **Role-based Access**: Fitur akses berbasis peran (`role`) sudah diterapkan. Hanya pengguna dengan **role "user"** yang dapat mengakses endpoint `/profile`.
 - **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
 - **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL sedang berjalan.
-- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
+- **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi. 
