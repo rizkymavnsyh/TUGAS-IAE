@@ -378,7 +378,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 
 ```json
 {
-  "refresh_token": "<your_valid_refresh_token>"
+  "refresh_token": "{{refresh_token}}"
 }
 ```
 
