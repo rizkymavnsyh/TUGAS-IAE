@@ -431,7 +431,7 @@ Cocok untuk pengujian yang lebih kompleks dan berulang.
 ### 1. **Refresh Token (Invalid) Request**
 
 ```bash
-curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{"refresh_token": "This is not refresh_token"}"
+curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{\"refresh_token\": \"This is not refresh_token\"}"
 ```
 
 **Screenshot**:
@@ -441,7 +441,7 @@ curl --request POST --url http://localhost:5000/auth/refresh --header "Content-T
 ### 2. **Update Profile (User Not Found) Request**
 
 ```bash
-curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --data "{\"name\": \"Nama Baru Dari Postman\", \"email\": \"new.email1@example.com\"}"
 ```
 **Screenshot**:
 <img width="1886" height="137" alt="Update Profile 404" src="https://github.com/user-attachments/assets/8cb5c53d-e95c-4249-9d09-f7a83600d650" />
@@ -450,7 +450,7 @@ curl --request PUT --url http://localhost:5000/profile --header "Content-Type: a
 ### 3. **Update Profile (Token Invalid) Request**
 
 ```bash
-curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_invalid_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_invalid_token>" --data "{\"name\": \"Nama Baru Dari Postman\", \"email\": \"new.email1@example.com\"}"
 ```
 **Screenshot**:
 <img width="1897" height="121" alt="Update Profile 401" src="https://github.com/user-attachments/assets/ef077a3d-e045-493c-a201-caff7ce8b126" />
@@ -459,7 +459,7 @@ curl --request PUT --url http://localhost:5000/profile --header "Content-Type: a
 ### 4. **Update Profile (Permission Denied) Request**
 
 ```bash
-curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_admin_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_admin_token>" --data "{\"name\": \"Nama Baru Dari Postman\", \"email\": \"new.email@example.com\"}"
 ```
 **Screenshot**:
 <img width="1892" height="132" alt="Update Profile 403" src="https://github.com/user-attachments/assets/32353a2d-5791-4392-a371-19752285a44a" />
@@ -468,7 +468,7 @@ curl --request PUT --url http://localhost:5000/profile --header "Content-Type: a
 ### 5. **Login User (Invalid Credentials) Request**
 
 ```bash
-curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{"email": "user1@example.com", "password": "pass123"}"
+curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{\"email\": \"user1@example.com\", \"password\": \"pass123\"}"
 ```
 **Screenshot**:
 <img width="1888" height="85" alt="Login user 401" src="https://github.com/user-attachments/assets/04c3cd69-bbbb-41c9-8ab9-f9bcf521947e" />
@@ -477,7 +477,7 @@ curl --request POST --url http://localhost:5000/auth/login --header "Content-Typ
 ### 6. **Update Profile (Successful) Request**
 
 ```bash
-curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_valid_token>" --data "{"name": "Nama Baru Dari Postman", "email": "new.email1@example.com"}"
+curl --request PUT --url http://localhost:5000/profile --header "Content-Type: application/json" --header "Authorization: Bearer <your_valid_token>" --data "{\"name\": \"Nama Baru Dari Postman\", \"email\": \"new.email1@example.com\"}"
 ```
 **Screenshot**:
 <img width="1886" height="127" alt="Update Profile 200" src="https://github.com/user-attachments/assets/eb2511b8-ee2e-4c51-b9c0-942e928b0d7c" />
