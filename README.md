@@ -313,3 +313,247 @@ curl -s -X PUT http://localhost:5000/profile   -H "Authorization: Bearer $TOKEN"
 - **Swagger UI**: Untuk dokumentasi API, dapat diakses melalui `http://localhost:5000/swagger`.
 - **Database**: Proyek ini dikonfigurasi untuk menggunakan MySQL. Pastikan server MySQL Anda berjalan.
 - **Keamanan**: Kata sandi disimpan menggunakan hash. Jangan pernah menyimpan kata sandi sebagai teks biasa di produksi.
+- 
+
+
+## 10. Postman Example Requests
+
+### 1. **Refresh Token (Invalid)**
+
+#### Request:
+- Method: `POST`
+- Endpoint: `http://localhost:5000/auth/refresh`
+
+**Body**:
+```json
+{
+  "refresh_token": "This is not refresh_token"
+}
+```
+
+#### Response (Error - 401):
+```json
+{
+  "error": "Refresh token is invalid"
+}
+```
+
+**Screenshot**:
+![Refresh Token Invalid](sandbox:/mnt/data/refresh%20token%20gagal.png)
+
+---
+
+### 2. **Update Profile (User Not Found)**
+
+#### Request:
+- Method: `PUT`
+- Endpoint: `http://localhost:5000/profile`
+
+**Body**:
+```json
+{
+  "name": "Nama Baru Dari Postman",
+  "email": "new.email1@example.com"
+}
+```
+
+#### Response (Error - 404):
+```json
+{
+  "error": "User not found"
+}
+```
+
+**Screenshot**:
+![Update Profile User Not Found](sandbox:/mnt/data/Update%20Profile%20User%20Not%20Found.png)
+
+---
+
+### 3. **Update Profile (Token Invalid)**
+
+#### Request:
+- Method: `PUT`
+- Endpoint: `http://localhost:5000/profile`
+
+**Body**:
+```json
+{
+  "name": "Nama Baru Dari Postman",
+  "email": "new.email1@example.com"
+}
+```
+
+#### Response (Error - 401):
+```json
+{
+  "error": "Token is invalid"
+}
+```
+
+**Screenshot**:
+![Update Profile Token Invalid](sandbox:/mnt/data/Update%20Profile%20Token%20Invalid.png)
+
+---
+
+### 4. **Update Profile (Role Admin Denied)**
+
+#### Request:
+- Method: `PUT`
+- Endpoint: `http://localhost:5000/profile`
+
+**Body**:
+```json
+{
+  "name": "Nama Baru Dari Postman",
+  "email": "new.email1@example.com"
+}
+```
+
+#### Response (Error - 403):
+```json
+{
+  "error": "Permission denied"
+}
+```
+
+**Screenshot**:
+![Update Profile Role Admin Gagal](sandbox:/mnt/data/Update%20Profile%20Role%20Admin%20Gagal.png)
+
+---
+
+### 5. **Login User (Invalid Credentials)**
+
+#### Request:
+- Method: `POST`
+- Endpoint: `http://localhost:5000/auth/login`
+
+**Body**:
+```json
+{
+  "email": "user1@example.com",
+  "password": "pass123"
+}
+```
+
+#### Response (Error - 401):
+```json
+{
+  "error": "Invalid credentials"
+}
+```
+
+**Screenshot**:
+![Login Error 401](sandbox:/mnt/data/Login%20error%20401.png)
+
+---
+
+### 6. **Update Profile (Successful)**
+
+#### Request:
+- Method: `PUT`
+- Endpoint: `http://localhost:5000/profile`
+
+**Body**:
+```json
+{
+  "name": "Nama Baru Dari Postman",
+  "email": "new.email1@example.com"
+}
+```
+
+#### Response (Success - 200):
+```json
+{
+  "message": "Profile updated",
+  "profile": {
+    "name": "Nama Baru Dari Postman",
+    "email": "new.email1@example.com"
+  }
+}
+```
+
+**Screenshot**:
+![Update Profile Berhasil](sandbox:/mnt/data/Update%20Profile%20Berhasil.png)
+
+---
+
+### 7. **Get Items (Successful)**
+
+#### Request:
+- Method: `GET`
+- Endpoint: `http://localhost:5000/items`
+
+#### Response (Success - 200):
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Item 1",
+      "price": 12345
+    },
+    {
+      "id": 2,
+      "name": "Item 2",
+      "price": 67890
+    }
+  ]
+}
+```
+
+**Screenshot**:
+![Get Items Berhasil](sandbox:/mnt/data/Get%20Items%20Berhasil.png)
+
+---
+
+### 8. **Refresh Token (Successful)**
+
+#### Request:
+- Method: `POST`
+- Endpoint: `http://localhost:5000/auth/refresh`
+
+**Body**:
+```json
+{
+  "refresh_token": "<your_valid_refresh_token>"
+}
+```
+
+#### Response (Success - 200):
+```json
+{
+  "access_token": "<new_valid_token>"
+}
+```
+
+**Screenshot**:
+![Refresh Token Berhasil](sandbox:/mnt/data/refresh%20token%20berhasil.png)
+
+---
+
+### 9. **Login User (Successful)**
+
+#### Request:
+- Method: `POST`
+- Endpoint: `http://localhost:5000/auth/login`
+
+**Body**:
+```json
+{
+  "email": "user1@example.com",
+  "password": "pass123"
+}
+```
+
+#### Response (Success - 200):
+```json
+{
+  "access_token": "<JWT>",
+  "refresh_token": "<Refresh JWT>"
+}
+```
+
+**Screenshot**:
+![Login Berhasil](sandbox:/mnt/data/Login%20berhasil.png)
+
+
