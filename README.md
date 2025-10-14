@@ -495,7 +495,7 @@ curl --request GET --url http://localhost:5000/items --header "Authorization: Be
 ### 8. **Refresh Token (Successful) Request**
 
 ```bash
-curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{"refresh_token": "<your_valid_refresh_token>"}"
+curl --request POST --url http://localhost:5000/auth/refresh --header "Content-Type: application/json" --data "{\"refresh_token\": \"<your_valid_refresh_token>\"}"
 ```
 **Screenshot**:
 <img width="1886" height="127" alt="refresh token 200" src="https://github.com/user-attachments/assets/0575995b-7cba-4cce-b727-6a2a1af9f233" />
@@ -504,7 +504,7 @@ curl --request POST --url http://localhost:5000/auth/refresh --header "Content-T
 ### 9. **Login User (Successful) Request**
 
 ```bash
-curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{"email": "user1@example.com", "password": "pass123"}"
+curl --request POST --url http://localhost:5000/auth/login --header "Content-Type: application/json" --data "{\"email\": \"user1@example.com\", \"password\": \"pass123\"}"
 ```
 **Screenshot**:
 <img width="1890" height="128" alt="Login user 200" src="https://github.com/user-attachments/assets/d0db068b-dac9-4b64-b1a5-5f7c391c77fe" />
